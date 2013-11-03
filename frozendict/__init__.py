@@ -2,6 +2,12 @@ import collections, operator
 
 class frozendict(collections.Mapping):
 
+    @classmethod
+    def from_dict(cls, d):
+        new = cls()
+        new.__dict.update(d)
+        return new
+
     def __init__(self, *args, **kwargs):
         self.__dict = dict(*args, **kwargs)
         self.__hash = None
