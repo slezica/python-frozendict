@@ -45,10 +45,7 @@ class frozendict(collections.Mapping):
 
     def __hash__(self):
         if self._hash is None:
-            h = 0
-            for key, value in iteritems(self._dict):
-                h ^= hash((key, value))
-            self._hash = h
+            self._hash = hash(frozenset(self._dict.items()))
         return self._hash
 
 
