@@ -3,15 +3,17 @@ import operator
 import functools
 import sys
 
-
 try:
     from collections import OrderedDict
 except ImportError:  # python < 2.7
     OrderedDict = NotImplemented
 
+try:
+    from types import MappingProxyType
+except ImportError:
+    MappingProxyType = lambda x: x # noop
 
 iteritems = getattr(dict, 'iteritems', dict.items) # py2-3 compatibility
-
 
 class frozendict(collections.Mapping):
     """
@@ -22,7 +24,7 @@ class frozendict(collections.Mapping):
     dict_cls = dict
 
     def __init__(self, *args, **kwargs):
-        self._dict = self.dict_cls(*args, **kwargs)
+        self._dict = MappingProxyType(self.dict_cls(*args, **kwargs))
         self._hash = None
 
     def __getitem__(self, key):
