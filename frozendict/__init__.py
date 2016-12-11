@@ -21,6 +21,12 @@ class frozendict(collections.Mapping):
 
     dict_cls = dict
 
+    @classmethod
+    def from_dict(cls, d):
+        new = cls()
+        new.__dict.update(d)
+        return new
+
     def __init__(self, *args, **kwargs):
         self._dict = self.dict_cls(*args, **kwargs)
         self._hash = None
