@@ -133,18 +133,28 @@ class TestFrozenOrderedDict(BaseTestCase):
 
 class TestFreezeAndUnfreeze(BaseTestCase):
     def test_freeze_dict(self):
-        self.assertEqual(freeze({}), frozendict({}))
-    def test_freeze_dict(self):
-        self.assertEqual(freeze({'a': 1}), frozendict({'a': 1}))
+        writable = {}
+        expected = frozendict(writable)
+        result = freeze(writable)
+        self.assertIs(type(result), type(expected))
+        self.assertEqual(freeze(writable), expected)
+    def test_freeze_dict2(self):
+        writable = {'a': 1}
+        expected = frozendict(writable)
+        result = freeze(writable)
+        self.assertIs(type(result), type(expected))
+        self.assertEqual(freeze(writable), expected)
     def test_freeze_ordered(self):
         writable = OrderedDict({})
         expected = FrozenOrderedDict({})
+        result = freeze(writable)
+        self.assertIs(type(result), type(expected))
         self.assertEqual(freeze(writable), expected)
     def test_freeze_ordered2(self):
         writable = OrderedDict({'a':1})
         expected = FrozenOrderedDict({'a': 1})
         result = freeze(writable)
-        self.assertIs(type(result), FrozenOrderedDict)
+        self.assertIs(type(result), type(expected))
         self.assertEqual(result, expected)
     def test_freeze_list(self):
         self.assertEqual(freeze([1,2,3]), (1,2,3))
