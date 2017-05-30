@@ -81,6 +81,6 @@ def freeze(writable):
     elif type(writable) is OrderedDict or type(writable) is FrozenOrderedDict:
         return FrozenOrderedDict([(k, freeze(v)) for k, v in writable.items()])
     elif type(writable) is dict or type(writable) is frozendict:
-        return {k: freeze(v) for k, v in writable.items()}
+        return frozendict({k: freeze(v) for k, v in writable.items()})
     else:
         return writable

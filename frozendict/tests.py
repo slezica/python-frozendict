@@ -165,10 +165,17 @@ class TestFreezeAndUnfreeze(BaseTestCase):
             }),
             'e': {'f': FrozenOrderedDict({'a':1})}
         })
-        self.assertEqual(freeze(writable), expected)
+        frozen = freeze(writable)
+        def modify(d, k):
+            d[k] = None
+        for k in expected:
+            self.assertRaises(TypeError, modify, expected, k)
+        for k in frozen:
+            self.assertRaises(TypeError, modify, frozen, k)
+        self.assertEqual(frozen, expected)
         self.assertDictEqual(unfreeze(expected), writable)
         ordered = unfreeze(expected)['e']['f']
         self.assertIs(type(ordered), OrderedDict)
-        self.assertDictEqual(unfreeze(freeze(writable)), writable)
+        self.assertDictEqual(unfreeze(frozen), writable)
         self.assertEqual(freeze(expected), expected)
 
