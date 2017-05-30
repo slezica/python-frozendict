@@ -1,6 +1,7 @@
 from unittest import TestCase
+from collections import OrderedDict
 
-from frozendict import frozendict, FrozenOrderedDict
+from frozendict import frozendict, FrozenOrderedDict, freeze, unfreeze
 
 
 class BaseTestCase(TestCase):
@@ -129,3 +130,45 @@ class TestFrozenOrderedDict(BaseTestCase):
     def test_hash(self):
         fd = FrozenOrderedDict(a=0, b=1)
         hash(fd)
+
+class TestFreezeAndUnfreeze(BaseTestCase):
+    def test_freeze_dict(self):
+        self.assertEqual(freeze({}), frozendict({}))
+    def test_freeze_dict(self):
+        self.assertEqual(freeze({'a': 1}), frozendict({'a': 1}))
+    def test_freeze_ordered(self):
+        writable = OrderedDict({})
+        expected = FrozenOrderedDict({})
+        self.assertEqual(freeze(writable), expected)
+    def test_freeze_ordered2(self):
+        writable = OrderedDict({'a':1})
+        expected = FrozenOrderedDict({'a': 1})
+        result = freeze(writable)
+        self.assertIs(type(result), FrozenOrderedDict)
+        self.assertEqual(result, expected)
+    def test_freeze_list(self):
+        self.assertEqual(freeze([1,2,3]), (1,2,3))
+    def test_freeze_recursion(self):
+        writable = {
+            'a': [1,2,{'a': 1}],
+            'b': 'foo',
+            'c': {
+                'd': {}
+            },
+            'e': {'f': OrderedDict({'a':1})}
+        }
+        expected = frozendict({
+            'a': (1,2, frozendict(({'a': 1}))),
+            'b': 'foo',
+            'c': {
+                'd': frozendict({})
+            },
+            'e': {'f': FrozenOrderedDict({'a':1})}
+        })
+        self.assertEqual(freeze(writable), expected)
+        self.assertEqual(unfreeze(expected), writable)
+        ordered = unfreeze(expected)['e']['f']
+        self.assertIs(type(ordered), OrderedDict)
+        self.assertEqual(unfreeze(freeze(writable)), writable)
+        self.assertEqual(freeze(expected), expected)
+
