@@ -160,15 +160,15 @@ class TestFreezeAndUnfreeze(BaseTestCase):
         expected = frozendict({
             'a': (1,2, frozendict(({'a': 1}))),
             'b': 'foo',
-            'c': {
+            'c': frozendict({
                 'd': frozendict({})
-            },
+            }),
             'e': {'f': FrozenOrderedDict({'a':1})}
         })
         self.assertEqual(freeze(writable), expected)
-        self.assertEqual(unfreeze(expected), writable)
+        self.assertDictEqual(unfreeze(expected), writable)
         ordered = unfreeze(expected)['e']['f']
         self.assertIs(type(ordered), OrderedDict)
-        self.assertEqual(unfreeze(freeze(writable)), writable)
+        self.assertDictEqual(unfreeze(freeze(writable)), writable)
         self.assertEqual(freeze(expected), expected)
 
