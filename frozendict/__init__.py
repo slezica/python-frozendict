@@ -66,33 +66,21 @@ if OrderedDict is NotImplemented:
 
 def unfreeze(frozen):
     if type(frozen) is tuple or type(frozen) is list:
-        return list(map(unfreeze, frozen))
+        return list(unfreeze(x) for x in frozen)
     elif type(frozen) is OrderedDict or type(frozen) is FrozenOrderedDict:
-        writable = OrderedDict()
-        for key in frozen:
-            writable[key] = unfreeze(frozen[key])
-        return writable
+        return OrderedDict([(k, unfreeze(v)) for k, v in frozen.items()])
     elif type(frozen) is dict or type(frozen) is frozendict:
-        writable = {}
-        for key in frozen:
-            writable[key] = unfreeze(frozen[key])
-        return writable
+        return {k: unfreeze(v) for k, v in frozen.items()}
     else:
         return frozen
 
 
 def freeze(writable):
     if type(writable) is tuple or type(writable) is list:
-        return tuple(map(freeze, writable))
+        return tuple(freeze(x) for x in writable)
     elif type(writable) is OrderedDict or type(writable) is FrozenOrderedDict:
-        frozen = OrderedDict()
-        for key in writable:
-            frozen[key] = freeze(writable[key])
-        return FrozenOrderedDict(frozen)
+        return FrozenOrderedDict([(k, freeze(v)) for k, v in writable.items()])
     elif type(writable) is dict or type(writable) is frozendict:
-        frozen = {}
-        for key in writable:
-            frozen[key] = freeze(writable[key])
-        return frozendict(frozen)
+        return {k: freeze(v) for k, v in writable.items()}
     else:
         return writable
