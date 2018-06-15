@@ -21,6 +21,11 @@ class frozendict(collections.Mapping):
 
     dict_cls = dict
 
+    def __new__(cls, *args, **kwargs):
+        if args and not kwargs and type(args[0]) == cls and cls in (frozendict, FrozenOrderedDict):
+            return args[0]
+        return super(frozendict, cls).__new__(cls)
+
     def __init__(self, *args, **kwargs):
         self._dict = self.dict_cls(*args, **kwargs)
         self._hash = None
