@@ -1,7 +1,4 @@
 import collections
-import operator
-import functools
-import sys
 
 
 try:
@@ -10,7 +7,7 @@ except ImportError:  # python < 2.7
     OrderedDict = NotImplemented
 
 
-iteritems = getattr(dict, 'iteritems', dict.items) # py2-3 compatibility
+iteritems = getattr(dict, "iteritems", dict.items)  # py2-3 compatibility
 
 
 class frozendict(collections.Mapping):
@@ -41,7 +38,7 @@ class frozendict(collections.Mapping):
         return len(self._dict)
 
     def __repr__(self):
-        return '<%s %r>' % (self.__class__.__name__, self._dict)
+        return "<%s %r>" % (self.__class__.__name__, self._dict)
 
     def __hash__(self):
         if self._hash is None:

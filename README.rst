@@ -22,15 +22,17 @@ Example shell usage:
 
 .. code-block:: python
 
+    from __future__ import print_function
+
     from frozendict import frozendict
 
     fd = frozendict({ 'hello': 'World' })
 
-    print fd
+    print(fd)
     # <frozendict {'hello': 'World'}>
 
-    print fd['hello']
+    print(fd['hello'])
     # 'World'
 
-    print fd.copy(another='key/value')
+    print(fd.copy(another='key/value'))
     # <frozendict {'hello': 'World', 'another': 'key/value'}>
