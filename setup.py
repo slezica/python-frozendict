@@ -1,8 +1,11 @@
 from setuptools import setup
 
+with open("README.rst") as readme_file:
+    LONG_DESCRIPTION = readme_file.read()
+
 setup(
     name     = 'frozendict',
-    version  = '1.2',
+    version  = '1.3',
     url      = 'https://github.com/slezica/python-frozendict',
 
     author       = 'Santiago Lezica',
@@ -12,5 +15,10 @@ setup(
     license  = 'MIT License',
 
     description      = 'An immutable dictionary',
-    long_description = open('README.rst').read()
+    long_description=LONG_DESCRIPTION,
+
+    classifiers=[
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+    ],
 )
