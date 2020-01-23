@@ -4,9 +4,9 @@ import sys
 
 try:
     # Python 3.3+
-    from collections import Mapping
-except ImportError:
     from collections.abc import Mapping
+except ImportError:
+    from collections import Mapping
 
 try:
     from collections import OrderedDict
