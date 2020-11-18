@@ -5,7 +5,7 @@ import sys
 
 
 try:
-    from collections import OrderedDict
+    from collections.abc import OrderedDict
 except ImportError:  # python < 2.7
     OrderedDict = NotImplemented
 
